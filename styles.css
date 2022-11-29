@@ -62,4 +62,8 @@
 body {
   margin: 0;
   background-color: grey;
+}
+
+.game {
+  height: 100vh;
 }/*# sourceMappingURL=styles.css.map */

@@ -11,6 +11,7 @@
 //ball speeding up
 //score changing
 
+//PRIMARY PADDLE
 //querySelectory gets div from html
 const game = document.querySelector(".game");
 const paddlePrimary = document.querySelector(".paddlePrimary");
@@ -20,8 +21,22 @@ function movingPaddlePrimary(mousePosition) {
   let rect = game.getBoundingClientRect();
   let paddlePosition = (mousePosition.clientY / rect.height) * 100;
   paddlePrimary.style.top = paddlePosition + "vh";
-  console.log(paddlePosition + "vh");
 }
 
 //event listener for when the mouse moves to run movingPaddlePrimary function
 game.addEventListener("mousemove", movingPaddlePrimary);
+
+//BALL
+//vars
+let speed = 1;
+
+const ball = document.querySelector(".ball");
+function moveBallX() {
+  let rect = game.getBoundingClientRect();
+  let ballRect = ball.getBoundingClientRect();
+  let ballPositionX = (ballRect.left / rect.width) * 100;
+  ball.style.left = ballPositionX + "vw";
+  console.log(ballRect.left);
+}
+
+game.addEventListener("click", moveBallX);

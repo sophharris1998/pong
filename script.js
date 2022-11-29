@@ -11,6 +11,12 @@
 //ball speeding up
 //score changing
 
+function gameLoop() {
+  moveBallX();
+  moveBallY();
+}
+setInterval(gameLoop, 33);
+
 //PRIMARY PADDLE
 //querySelectory gets div from html
 const game = document.querySelector(".game");
@@ -46,16 +52,47 @@ function moveBallX() {
     goingLeft = true;
   }
   if (goingLeft == true) {
-    speed = -5;
+    speed = -1;
   } else {
-    speed = 5;
+    speed = 1;
   }
 
-  // rect gets the position of the ball div when moving left, divids it by the width of the x axis to get the positional percentage and then times by 100 to get the VW
-  let ballPositionX = (ballRect.left / rect.width) * 100;
-  ball.style.left = ballPositionX + speed + "vw";
-
-  console.log(speed + "+" + ballRect.left);
+  // ballRect gets the position of the ball on the X axis,
+  let ballPositionX = ballRect.left;
+  if (goingLeft == true) {
+    ball.style.left = parseInt(ballPositionX - 25) + "px";
+  } else {
+    ball.style.left = parseInt(ballPositionX + 25) + "px";
+  }
 }
 
-game.addEventListener("click", moveBallX);
+//move ball y
+//vars
+let speedY = 1;
+let goingUp = true;
+
+function moveBallY() {
+  let rect = game.getBoundingClientRect();
+  let ballRect = ball.getBoundingClientRect();
+
+  if (ballRect.top < 0) {
+    goingUp = false;
+  }
+  if (ballRect.top > rect.height) {
+    goingUp = true;
+  }
+  if (goingUp == true) {
+    speedY = -5;
+  } else {
+    speedY = 5;
+  }
+
+  let ballPositionY = ballRect.top;
+  if (speedY > 0) {
+    ball.style.top = parseInt(ballPositionY + 25) + "px";
+  } else {
+    ball.style.top = parseInt(ballPositionY - 25) + "px";
+  }
+
+  console.log(speedY + "+" + ballPositionY);
+}

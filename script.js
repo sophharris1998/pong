@@ -48,7 +48,7 @@ function moveBallX() {
   if (ballRect.left < 0) {
     goingLeft = false;
   }
-  if (ballRect.left > rect.width) {
+  if (ballRect.left > rect.width - ballRect.width / 2) {
     goingLeft = true;
   }
   if (goingLeft == true) {
@@ -58,7 +58,7 @@ function moveBallX() {
   }
 
   // ballRect gets the position of the ball on the X axis,
-  let ballPositionX = ballRect.left;
+  let ballPositionX = ballRect.x;
   if (goingLeft == true) {
     ball.style.left = parseInt(ballPositionX - 25) + "px";
   } else {
@@ -78,7 +78,7 @@ function moveBallY() {
   if (ballRect.top < 0) {
     goingUp = false;
   }
-  if (ballRect.top > rect.height) {
+  if (ballRect.top > rect.height - ballRect.height / 2) {
     goingUp = true;
   }
   if (goingUp == true) {
@@ -87,7 +87,7 @@ function moveBallY() {
     speedY = 5;
   }
 
-  let ballPositionY = ballRect.top;
+  let ballPositionY = ballRect.y;
   if (speedY > 0) {
     ball.style.top = parseInt(ballPositionY + 25) + "px";
   } else {

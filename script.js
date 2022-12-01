@@ -1,16 +1,4 @@
-// =create index, sass, JS,
-//score 1, score 2
-// ball
-// player paddle 1, player paddle 2
-// paddle positions
-//update loop for everytime something changes so it constantly runs, move ball, check for unputs, EVERYTHING
-// onInput/onChange everytime you type in a box itll relate back to the id/class. up button makes paddle go up and down button makes it go down
-// x and y
-// different directions
-// bounce from walls and paddles
-//ball speeding up
-//score changing
-
+//calling functions
 function gameLoop() {
   paddlePrimaryCollision();
   moveBallX();
@@ -23,6 +11,7 @@ function gameLoop() {
 //querySelectory gets div from html
 const game = document.querySelector(".game");
 const paddlePrimary = document.querySelector(".paddlePrimary");
+const ball = document.querySelector(".ball");
 
 // rect gets the size of game div, the position of the mouse Y divided by the height of rect to get the percentange of postition Y then times by 100 to get the VH value
 function movingPaddlePrimary(mousePosition) {
@@ -39,36 +28,31 @@ game.addEventListener("mousemove", movingPaddlePrimary);
 let speed = 1;
 let goingLeft = true;
 
-//query selector to find the div "ball"
-const ball = document.querySelector(".ball");
-
 // function moveBallX gets the size of the game and the ball, if the balls poisition smaller than 0 it should move to the right
 function moveBallX() {
-  let rect = game.getBoundingClientRect();
-  let ballRect = ball.getBoundingClientRect();
-  let paddleSecondaryRect = paddleSecondary.getBoundingClientRect();
-
+  let rect = game.getBoundingClientRect(); //gets the size of the game
+  let ballRect = ball.getBoundingClientRect(); //gets the size of the ball
+  let paddleSecondaryRect = paddleSecondary.getBoundingClientRect(); //gets the size of the computer paddle
+  //resetting the ball if computer scores
   if (ballRect.left < 0) {
-    ball.style.left = rect.width / 2 + "px";
-    ball.style.top = rect.height / 2 + "px";
+    //if the ball passes the 0 on X axis
+    ball.style.left = rect.width / 2 + "px"; //middle of page
+    ball.style.top = rect.height / 2 + "px"; //middle of page
     ballRect = ball.getBoundingClientRect();
 
-    goingLeft = false;
-    pointScores();
+    goingLeft = false; //ball will be going right
+    pointScores(); //adds onto computer score by 1
   }
+
+  //if the ball has gone passed (is bigger than) the secondary/computer paddle. -ballRect.width / 2 means that the ball will hit the paddle and not go over it
   if (ballRect.left > paddleSecondaryRect.x - ballRect.width / 2) {
-    goingLeft = true;
-  }
-  if (goingLeft == true) {
-    speed = -1;
-  } else {
-    speed = 1;
+    goingLeft = true; //go left
   }
 
   // ballRect gets the position of the ball on the X axis,
   let ballPositionX = ballRect.x;
   if (goingLeft == true) {
-    ball.style.left = ballPositionX - 25 + "px";
+    ball.style.left = ballPositionX - 25 + "px"; // - makes the ball go left 25px at a time if I wanted to increase the speed increase the number and vice versa
   } else {
     ball.style.left = ballPositionX + 25 + "px";
   }
@@ -79,6 +63,7 @@ const score = document.querySelector(".score");
 const scorePrimary = document.querySelector(".scorePrimary");
 const scoreSecondary = document.querySelector(".scoreSecondary");
 
+//function for scoring points changes the inner text of score secondary +1 each time
 function pointScores() {
   scoreSecondary.innerText = parseInt(scoreSecondary.innerText) + 1;
 }
@@ -93,33 +78,30 @@ function moveBallY() {
   let ballRect = ball.getBoundingClientRect();
 
   if (ballRect.top < 0) {
+    //if the balls position on the y axis is smaller than 0 the ball will move down
     goingUp = false;
   }
   if (ballRect.top > rect.height - ballRect.height / 2) {
+    //if the balls position on the y axis is bigger than the height of the screen then the ball moves up
     goingUp = true;
-  }
-  if (goingUp == true) {
-    speedY = -5;
-  } else {
-    speedY = 5;
   }
 
   let ballPositionY = ballRect.y;
-  if (speedY > 0) {
+  if (goingUp == true) {
     ball.style.top = ballPositionY + 25 + "px";
   } else {
-    ball.style.top = ballPositionY - 25 + "px";
+    ball.style.top = ballPositionY - 25 + "px"; //ball moves down at 25px a loop
   }
 }
 
 //paddle "AI"
 const paddleSecondary = document.querySelector(".paddleSecondary");
 function movingPaddleSecondary() {
-  let rect = game.getBoundingClientRect();
+  let rect = game.getBoundingClientRect(); //getting size of game div
 
   let ballRect = ball.getBoundingClientRect();
-  let paddlePositionSecondary = (ballRect.y / rect.height) * 100;
-  paddleSecondary.style.top = paddlePositionSecondary + "vh";
+  let paddlePositionSecondary = (ballRect.y / rect.height) * 100; //balls y position divided by the height of game times 100 which will give the paddles vh
+  paddleSecondary.style.top = paddlePositionSecondary + "vh"; //getting the paddleSecondary top and setting it to the above
 }
 
 //function for ball paddle collision paddle primary
@@ -128,13 +110,17 @@ function paddlePrimaryCollision() {
   let ballRect = ball.getBoundingClientRect();
   let paddlePrimaryRect = paddlePrimary.getBoundingClientRect();
 
+  //if the ball is gone past the paddlePrimary...
   if (ballRect.x < paddlePrimaryRect.x + paddlePrimaryRect.width) {
+    // checking if the ball is inline with paddlePrimary. 1st if its below and 2nd checks if its it above
     if (
       ballRect.y < paddlePrimaryRect.y + paddlePrimaryRect.height &&
       ballRect.y > paddlePrimaryRect.y
     )
+      //tells the ball to go right
       goingLeft = false;
   }
 }
 
+//STARTS GAME LOOP... at the bottom as everything is declared
 requestAnimationFrame(gameLoop);

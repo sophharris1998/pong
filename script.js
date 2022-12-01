@@ -87,7 +87,7 @@ function moveBallY() {
   }
 
   let ballPositionY = ballRect.y;
-  if (goingUp == true) {
+  if (goingUp == false) {
     ball.style.top = ballPositionY + 25 + "px";
   } else {
     ball.style.top = ballPositionY - 25 + "px"; //ball moves down at 25px a loop

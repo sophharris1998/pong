@@ -19,6 +19,21 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
+//PRIMARY PADDLE
+//querySelectory gets div from html
+const game = document.querySelector(".game");
+const paddlePrimary = document.querySelector(".paddlePrimary");
+
+// rect gets the size of game div, the position of the mouse Y divided by the height of rect to get the percentange of postition Y then times by 100 to get the VH value
+function movingPaddlePrimary(mousePosition) {
+  let rect = game.getBoundingClientRect();
+  let paddlePosition = (mousePosition.clientY / rect.height) * 100;
+  paddlePrimary.style.top = paddlePosition + "vh";
+}
+
+//event listener for when the mouse moves to run movingPaddlePrimary function
+game.addEventListener("mousemove", movingPaddlePrimary);
+
 //BALL
 //vars
 let speed = 1;
@@ -31,11 +46,12 @@ const ball = document.querySelector(".ball");
 function moveBallX() {
   let rect = game.getBoundingClientRect();
   let ballRect = ball.getBoundingClientRect();
+  let paddleSecondaryRect = paddleSecondary.getBoundingClientRect();
 
   if (ballRect.left < 0) {
     //goingLeft = false;
   }
-  if (ballRect.left > rect.width - ballRect.width / 2) {
+  if (ballRect.left > paddleSecondaryRect.x - ballRect.width / 2) {
     goingLeft = true;
   }
   if (goingLeft == true) {
@@ -47,9 +63,9 @@ function moveBallX() {
   // ballRect gets the position of the ball on the X axis,
   let ballPositionX = ballRect.x;
   if (goingLeft == true) {
-    ball.style.left = parseInt(ballPositionX - 25) + "px";
+    ball.style.left = ballPositionX - 25 + "px";
   } else {
-    ball.style.left = parseInt(ballPositionX + 25) + "px";
+    ball.style.left = ballPositionX + 25 + "px";
   }
 }
 
@@ -76,9 +92,9 @@ function moveBallY() {
 
   let ballPositionY = ballRect.y;
   if (speedY > 0) {
-    ball.style.top = parseInt(ballPositionY + 25) + "px";
+    ball.style.top = ballPositionY + 25 + "px";
   } else {
-    ball.style.top = parseInt(ballPositionY - 25) + "px";
+    ball.style.top = ballPositionY - 25 + "px";
   }
 }
 
@@ -98,8 +114,12 @@ function paddlePrimaryCollision() {
   let ballRect = ball.getBoundingClientRect();
   let paddlePrimaryRect = paddlePrimary.getBoundingClientRect();
 
-  if (ballRect.x < paddlePrimaryRect.x + ballRect.width / 2) {
-    goingLeft = false;
+  if (ballRect.x < paddlePrimaryRect.x + paddlePrimaryRect.width) {
+    if (
+      ballRect.y < paddlePrimaryRect.y + paddlePrimaryRect.height &&
+      ballRect.y > paddlePrimaryRect.y
+    )
+      goingLeft = false;
   }
 }
 

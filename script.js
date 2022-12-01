@@ -14,8 +14,8 @@
 function gameLoop() {
   paddlePrimaryCollision();
   moveBallX();
-  //moveBallY();
-  //movingPaddleSecondary();
+  moveBallY();
+  movingPaddleSecondary();
   requestAnimationFrame(gameLoop);
 }
 

@@ -54,17 +54,7 @@ function moveBallX() {
     ballRect = ball.getBoundingClientRect();
 
     goingLeft = false;
-
-    //score
-    const score = document.querySelector(".score");
-    const scorePrimary = document.querySelector(".scorePrimary");
-    const scoreSecondary = document.querySelector(".scoreSecondary");
-
-    function pointScores() {
-      if (ball.rect == game.left) {
-        ".scoreSecondary" + 1;
-      }
-    }
+    pointScores();
   }
   if (ballRect.left > paddleSecondaryRect.x - ballRect.width / 2) {
     goingLeft = true;
@@ -82,6 +72,15 @@ function moveBallX() {
   } else {
     ball.style.left = ballPositionX + 25 + "px";
   }
+}
+
+//score
+const score = document.querySelector(".score");
+const scorePrimary = document.querySelector(".scorePrimary");
+const scoreSecondary = document.querySelector(".scoreSecondary");
+
+function pointScores() {
+  scoreSecondary.innerText = parseInt(scoreSecondary.innerText) + 1;
 }
 
 //move ball y

@@ -12,25 +12,12 @@
 //score changing
 
 function gameLoop() {
+  paddlePrimaryCollision();
   moveBallX();
-  moveBallY();
+  //moveBallY();
+  //movingPaddleSecondary();
+  requestAnimationFrame(gameLoop);
 }
-setInterval(gameLoop, 33);
-
-//PRIMARY PADDLE
-//querySelectory gets div from html
-const game = document.querySelector(".game");
-const paddlePrimary = document.querySelector(".paddlePrimary");
-
-// rect gets the size of game div, the position of the mouse Y divided by the height of rect to get the percentange of postition Y then times by 100 to get the VH value
-function movingPaddlePrimary(mousePosition) {
-  let rect = game.getBoundingClientRect();
-  let paddlePosition = (mousePosition.clientY / rect.height) * 100;
-  paddlePrimary.style.top = paddlePosition + "vh";
-}
-
-//event listener for when the mouse moves to run movingPaddlePrimary function
-game.addEventListener("mousemove", movingPaddlePrimary);
 
 //BALL
 //vars
@@ -46,7 +33,7 @@ function moveBallX() {
   let ballRect = ball.getBoundingClientRect();
 
   if (ballRect.left < 0) {
-    goingLeft = false;
+    //goingLeft = false;
   }
   if (ballRect.left > rect.width - ballRect.width / 2) {
     goingLeft = true;
@@ -93,6 +80,38 @@ function moveBallY() {
   } else {
     ball.style.top = parseInt(ballPositionY - 25) + "px";
   }
-
-  console.log(speedY + "+" + ballPositionY);
 }
+
+//paddle "AI"
+const paddleSecondary = document.querySelector(".paddleSecondary");
+function movingPaddleSecondary() {
+  let rect = game.getBoundingClientRect();
+
+  let ballRect = ball.getBoundingClientRect();
+  let paddlePositionSecondary = (ballRect.y / rect.height) * 100;
+  paddleSecondary.style.top = paddlePositionSecondary + "vh";
+}
+
+//function for ball paddle collision paddle primary
+
+function paddlePrimaryCollision() {
+  let ballRect = ball.getBoundingClientRect();
+  let paddlePrimaryRect = paddlePrimary.getBoundingClientRect();
+
+  if (ballRect.x < paddlePrimaryRect.x + ballRect.width / 2) {
+    goingLeft = false;
+  }
+}
+
+//score
+
+let scorePrimary = 0;
+let scoreSecondary = 0;
+
+function pointScores() {
+  if (ball.rect == game.left) {
+    ".scoreSecondary" + 1;
+  }
+}
+
+requestAnimationFrame(gameLoop);
